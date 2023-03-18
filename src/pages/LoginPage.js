@@ -2,12 +2,6 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-
-
-import { setUser } from "../@redux/reducer";
-
-
-
 // ** MUI Components
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -36,7 +30,7 @@ const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const infoBox = withReactContent(Swal)
-
+    const [user, setUser] = useState({});
 
     // ** Hook
     const navigate = useNavigate();
@@ -76,8 +70,9 @@ const LoginPage = () => {
             .then(function (response) {
                 console.log(response.data);
                 if (response.data.status === "success") {
-                    dispatch(setUser(response.data.user))
-                    navigate("/home");
+                    console.log(response.data)
+                    // setUser(response.data.data)
+                    navigate("/home", {state: {user: response.data.data}});
                 } else {
 
                     infoBox.fire({

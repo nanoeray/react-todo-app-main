@@ -1,8 +1,7 @@
 import axios from "axios";
 import {baseURL} from "./constants/baseURL";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVyYXlfZ3VsNGJAaG90bWFpbC5jb20iLCJpYXQiOjE2NzkwNzEyNjMsImV4cCI6MTY3OTgwMDI2M30.zcR03X_6MrKRv00Qn9xJWLTgEZGsC8nDYrYB-YyF-sY";
-export const completeTodo = (id) => {
+export const completeTodo = (id, token) => {
     return new Promise(async (resolve, reject) => {
         const data = JSON.stringify({
             "id": id
@@ -27,7 +26,7 @@ export const completeTodo = (id) => {
     })
 }
 
-export const incompleteTodo = (id) => {
+export const incompleteTodo = (id, token) => {
     return new Promise(async (resolve, reject) => {
         const data = JSON.stringify({
             "id": id
@@ -52,7 +51,7 @@ export const incompleteTodo = (id) => {
     })
 }
 
-export const deleteTodo = (id) => {
+export const deleteTodo = (id, token) => {
     return new Promise(async (resolve, reject) => {
         const data = JSON.stringify({
             "id": id
@@ -77,7 +76,7 @@ export const deleteTodo = (id) => {
     });
 }
 
-export const addTodo = async (e) => {
+export const addTodo = async (e, token) => {
     return new Promise(async (resolve, reject) => {
         const value = e.target[0].value;
         if (value === "") {

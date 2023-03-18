@@ -1,11 +1,12 @@
-import React,{useEffect} from "react";
+import React, {useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import {connect, useSelector} from "react-redux";
 import { addTodos } from "../@redux/reducer";
 import TodoShow from "../components/TodoShow";
 import "../App.css";
 import SvgLogo from "../components/svgLogo";
-
+import {useLocation, useNavigate} from 'react-router-dom';
+import { isExpired } from "react-jwt";
 //** Redux
 const mapStateToProps = (state) => {
   return {
@@ -19,10 +20,22 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const HomePage = () => {
-    const user = useSelector(state =>  state)
-    useEffect(()=> {
-       console.log('user:',user)
-    },[user])
+    const navigate = useNavigate();
+    const location = useLocation()
+    const [loaded,setLoaded] = useState(true);
+    const [user, setUser] = useState(location.state);
+
+    useEffect(() => {
+        if(location.state) {
+            if(isExpired(location.state.user.token)) {
+                navigate('/')
+            }
+        } else {
+            navigate('/');
+        }
+        setLoaded(false);
+    }, [loaded])
+
   return (
       <Box className="content-center">
           <div className="Rectangle">
@@ -34,7 +47,7 @@ const HomePage = () => {
                       Todo List
                   </div>
               </Box>
-              <TodoShow />
+              <TodoShow user={user.user} />
           </div>
       </Box>
   )

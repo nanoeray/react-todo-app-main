@@ -8,10 +8,11 @@ import Swal from "sweetalert2";
 const TodoItem = (props) => {
     const {item} = props;
     const infoBox = withReactContent(Swal)
+    const token = props.user.token
     const updateTodoList = (e) => {
         const itemId = e.target.value;
         if (!e.target.checked) {
-            incompleteTodo(itemId).then(r => {
+            incompleteTodo(itemId, token).then(r => {
                 if(r.data.status === "success") {
                     infoBox.fire({
                         title: <strong>Success</strong>,
@@ -29,7 +30,7 @@ const TodoItem = (props) => {
                 }
             })
         } else {
-            completeTodo(itemId).then(r => {
+            completeTodo(itemId, token).then(r => {
                 if(r.data.status === "success") {
                     infoBox.fire({
                         title: <strong>Success</strong>,
@@ -51,7 +52,7 @@ const TodoItem = (props) => {
 
     const deleteTodoFromList = async (e) => {
 
-        await deleteTodo(e).then(r => {
+        await deleteTodo(e, token).then(r => {
             if(r.data.status === "success") {
                 infoBox.fire({
                     title: <strong>Success</strong>,

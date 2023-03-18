@@ -1,6 +1,5 @@
 import {Box, ButtonGroup, TextField} from "@mui/material";
 import React, {useEffect, useState} from "react";
-
 import TodoItem from "./TodoItem";
 import axios from "axios";
 import {baseURL} from "../constants/baseURL";
@@ -9,6 +8,7 @@ import Swal from "sweetalert2";
 import {addTodo} from '../utils'
 
 const DisplayTodos = (props) => {
+    const token = props.user.token;
     const [todoList, setTodoList] = useState([]);
     const [sort, setSort] = useState("all");
     const [reloadList, setReloadList] = useState(true);
@@ -16,9 +16,7 @@ const DisplayTodos = (props) => {
 
     const createTodo = async (e) => {
         e.preventDefault()
-        const create = await addTodo(e);
-        console.log(create)
-
+        const create = await addTodo(e, token);
         e.target[0].value = '';
         if (create.data?.status === "success") {
             infoBox.fire({
@@ -47,7 +45,7 @@ const DisplayTodos = (props) => {
             maxBodyLength: Infinity,
             url: `${baseURL}/todo/listTodos`,
             headers: {
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVyYXlfZ3VsNGJAaG90bWFpbC5jb20iLCJpYXQiOjE2NzkwNzEyNjMsImV4cCI6MTY3OTgwMDI2M30.zcR03X_6MrKRv00Qn9xJWLTgEZGsC8nDYrYB-YyF-sY'
+                'Authorization': `Bearer ${token}`
             }
         };
         axios(config)
@@ -84,7 +82,7 @@ const DisplayTodos = (props) => {
                                     key={item.id}
                                     item={item}
                                     childListen={childListen}
-
+                                    user={props.user}
                                 />
 
                             );
